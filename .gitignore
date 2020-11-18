@@ -1,0 +1,4 @@
+#Zip Files should not get tracked
+*.zip
+*.pdf
+.vscode/settings.json
