@@ -6,7 +6,7 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 
 class EchoClient {
-  private static final String HOST = "localhost";
+  private static final String HOST = "smallbox";
   private static final int PORT = 4711;
   private static final int BUFSIZE = 512;
   private static final int TIMEOUT = 2000;
@@ -17,11 +17,13 @@ class EchoClient {
       socket.setSoTimeout(TIMEOUT); // Zeit in ms, für wie lange ein read() auf socket blockiert.
                                     // Bei timeout is java.net.SocketTimeoutException (TIMEOUT == 0
                                     // => blockiert für immer)
-      InetAddress iaddr = InetAddress.getByName(HOST);
+      //InetAddress iaddr = InetAddress.getByName(HOST);
+      byte[] ip = {(byte)192, (byte)168, (byte)0, (byte)104};
+      InetAddress iaddr = InetAddress.getByAddress(ip);
       DatagramPacket packetOut = new DatagramPacket(data, data.length, iaddr, PORT);
       socket.send(packetOut);
       DatagramPacket packetIn = new DatagramPacket(new byte[BUFSIZE], BUFSIZE);
-      socket.receive(packetOut);
+      socket.receive(packetIn);
       String received = new String(packetIn.getData(), 0, packetIn.getLength());
       System.out.println("Received: " + received);
     } catch (SocketTimeoutException e) {
