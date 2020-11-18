@@ -19,6 +19,7 @@ class EchoServer {
         socket.receive(packetIn);
         System.out.println(
             "Received: " + packetIn.getLength() + " bytes: " + new String(packetIn.getData()));
+        packetOut.setSocketAddress(packetIn.getSocketAddress());
         packetOut.setData(packetIn.getData());
         packetOut.setLength(packetIn.getLength());
         // mehr Eigenschaften von packetOut setzen...
