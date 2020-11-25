@@ -3,31 +3,36 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 
+
+
 public class DatagramExample {
+
+   private static final int PORT_IN = 8889;
+
    public static void main(String[] args) {
    //Opening a socket for UDP    
-      DatagramSocket socketSender = null;
-      DatagramSocket socketReceiver= null;   
-      DatagramPacket receiveDatagram = null;
-      DatagramPacket sendDatagram = null;
-      byte[] bufReceive = new byte[8];
+   DatagramSocket socketOut = null;
+   DatagramSocket socketIn= null;   
+   DatagramPacket packetIn = null;
+   DatagramPacket packetOut = null;
+      byte[] bufReceive = new byte[512];
       int length = 8;
       byte[] bufSend = {0,1,2,3,4,5,6,7};
       InetSocketAddress receiverAddress = new InetSocketAddress(8888);
       
       try {
-         socketSender = new DatagramSocket(null);
-         socketSender.bind(new InetSocketAddress(8888));
+         socketOut = new DatagramSocket(null);
+         socketOut.bind(new InetSocketAddress(8888));
          //Shorter Notation
-         socketReceiver = new DatagramSocket(8889);
-         receiveDatagram = new DatagramPacket(bufReceive, length);
-         sendDatagram = new DatagramPacket(bufSend, length, receiverAddress);
-         RunnerReceiveSocket taskToReceive = new RunnerReceiveSocket(socketReceiver, receiveDatagram);
+         socketIn = new DatagramSocket(PORT_IN);
+         packetIn = new DatagramPacket(bufReceive, length);
+         packetOut = new DatagramPacket(bufSend, length, receiverAddress);
+         RunnerReceiveSocket taskToReceive = new RunnerReceiveSocket(socketIn, packetIn);
          Thread receiverClient = new Thread (taskToReceive);
          receiverClient.start();
-         socketReceiver.send(sendDatagram);
-         socketSender.close();
-         socketReceiver.close();
+         socketIn.send(packetOut);
+         socketOut.close();
+         socketIn.close();
       } catch (Exception e) {
          e.printStackTrace();
       }
