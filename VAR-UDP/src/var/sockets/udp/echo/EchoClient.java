@@ -12,7 +12,7 @@ class EchoClient {
   private static final int TIMEOUT = 2000;
 
   public static void main(String[] args) {
-    byte[] data = args[0].getBytes();
+    byte[] data = "Hello This is a Text".getBytes();
     try (DatagramSocket socket = new DatagramSocket()) {
       socket.setSoTimeout(TIMEOUT); // Zeit in ms, für wie lange ein read() auf socket blockiert.
                                     // Bei timeout is java.net.SocketTimeoutException (TIMEOUT == 0
@@ -21,7 +21,7 @@ class EchoClient {
       DatagramPacket packetOut = new DatagramPacket(data, data.length, iaddr, PORT);
       socket.send(packetOut);
       DatagramPacket packetIn = new DatagramPacket(new byte[BUFSIZE], BUFSIZE);
-      socket.receive(packetOut);
+      socket.receive(packetIn);
       String received = new String(packetIn.getData(), 0, packetIn.getLength());
       System.out.println("Received: " + received);
     } catch (SocketTimeoutException e) {
