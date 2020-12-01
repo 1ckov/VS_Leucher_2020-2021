@@ -15,13 +15,21 @@ public class TimeTextServer {
 	}
 
 	public void startServer() {
+		//Open "Welcome Socket"
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
+			//Server start
 			while (true) {
+				//Accept new connections
 				try (Socket socket = serverSocket.accept();
+						//Open a Stream for writing to clients
 						PrintWriter out = new PrintWriter(socket.getOutputStream())) {
+				    //Get current date
 					Date now = new Date();
-					String currentTime = // DateFormat Instanz holen und mit dessen format Methode now zum String machen
+					//Format current date to the System locale  
+					String currentTime = DateFormat.getInstance().format(now);// DateFormat Instanz holen und mit dessen format Methode now zum String machen
+					//Send time to Clients
 					out.print(currentTime);
+					//Flush buffer so we can dont send old time stamps 
 					out.flush();
 				} catch (IOException e) {
 					System.err.println(e);
