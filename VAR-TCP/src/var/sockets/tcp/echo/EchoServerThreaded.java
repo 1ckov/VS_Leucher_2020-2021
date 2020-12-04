@@ -37,9 +37,9 @@ public class EchoServerThreaded {
 		}
 
 		public void run() {
-			// hier muss die Verbindung mit dem Client über this.socket
-			// abgearbeitet werden
+			//For verbose purposes
 			SocketAddress socketAddress = null;
+			//Open Input Stream to read 
 			try(BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
 				socketAddress = socket.getRemoteSocketAddress();
